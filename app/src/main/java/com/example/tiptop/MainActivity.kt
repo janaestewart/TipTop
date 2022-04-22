@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import com.example.tiptop.databinding.ActivityMainBinding
+import java.text.NumberFormat
 
 class MainActivity : AppCompatActivity() {
 
@@ -49,6 +50,27 @@ class MainActivity : AppCompatActivity() {
             R.id.option_eighteen_percent -> .18
             else -> .15
         }
+
+        //var over val because if rounded the tip value will/might change
+
+        var tip = tipPercentage * cost
+
+        //checking to see if the roundup switch is checked
+
+        val roundUp = binding.roundUpSwitch.isChecked
+
+        //round up function
+        if(roundUp) {
+            tip = kotlin.math.ceil(tip)
+        }
+
+        //get the correct currency type
+
+        val formattedTip = NumberFormat.getCurrencyInstance().format(tip)
+
+        //displaying the tip result
+
+        binding.tipResult.text = getString(R.string.tip_amount, formattedTip)
     }
 }
 
