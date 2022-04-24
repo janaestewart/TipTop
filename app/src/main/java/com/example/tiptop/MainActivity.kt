@@ -8,12 +8,12 @@ import java.text.NumberFormat
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
 
     //This line declares a top-level variable in the class for the binding object.
     // It's defined at this level because it will be used across multiple methods
     // in MainActivity class.
-    // The lateinit keyword is something new. It's a promise that your code will initialize the
+    // The 'late in it' keyword is something new. It's a promise that your code will initialize the
     // variable before using it. If you don't, your app will crash
 
 
@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         binding.calculateButton.setOnClickListener { calculateTip() }
     }
 
-    fun calculateTip() {
+    private fun calculateTip() {
 
         //grabbing the input cost of the user
 
@@ -42,17 +42,16 @@ class MainActivity : AppCompatActivity() {
         val cost = stringInTextField.toDoubleOrNull()
 
         //added if statement to handle empty string to go with the new toDoubleOrNull
-        if (cost == null) {
-            binding.tipResult.text =""
+        if (cost == null || cost == 0.0) {
+//            binding.tipResult.text =""
+            displayTip(0.0)
             return
         }
 
 
         //grabbing which of the tip options is selected
 
-        val selectId = binding.tipOptions.checkedRadioButtonId
-
-        val tipPercentage = when (selectId){
+        val tipPercentage = when (binding.tipOptions.checkedRadioButtonId){
             R.id.option_twenty_percent -> .20
             R.id.option_eighteen_percent -> .18
             else -> .15
@@ -64,19 +63,26 @@ class MainActivity : AppCompatActivity() {
 
         //checking to see if the roundup switch is checked
 
-        val roundUp = binding.roundUpSwitch.isChecked
+//        val roundUp = binding.roundUpSwitch.isChecked  removing unnecessary variables and lines of code
 
         //round up function
-        if(roundUp) {
+        if(binding.roundUpSwitch.isChecked) {
             tip = kotlin.math.ceil(tip)
         }
 
         //get the correct currency type
 
-        val formattedTip = NumberFormat.getCurrencyInstance().format(tip)
+//        val formattedTip = NumberFormat.getCurrencyInstance().format(0.0)
 
         //displaying the tip result
 
+//        binding.tipResult.text = getString(R.string.tip_amount, formattedTip)
+
+        displayTip(tip)
+    }
+
+    private fun displayTip(tip: Double) {
+        val formattedTip = NumberFormat.getCurrencyInstance().format(tip)
         binding.tipResult.text = getString(R.string.tip_amount, formattedTip)
     }
 }
