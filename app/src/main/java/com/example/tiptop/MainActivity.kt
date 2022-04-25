@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
 
         //grabbing the input cost of the user
 
-        val stringInTextField = binding.costOfService.text.toString()
+        val stringInTextField = binding.costOfServiceEditText.text.toString()
         val cost = stringInTextField.toDoubleOrNull()
 
         //added if statement to handle empty string to go with the new toDoubleOrNull
